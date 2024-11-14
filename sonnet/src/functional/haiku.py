@@ -78,6 +78,7 @@ def safe_read_tensor_value(variable):
 
   value = variable.tensor_value
   if value is None:
+    # pylint: disable=implicit-str-concat
     raise ValueError("".join((
         "Attempted to read a TensorVariable in a context where it has no ",
         "value. This commonly happens for one of two reasons:",
@@ -96,6 +97,7 @@ def safe_read_tensor_value(variable):
         "For (2) to read variable values inspect the result of a transformed",
         "function (e.g. look at the `params` dictionary returned from ",
         "`f.init(..)`).")))
+    # pylint: enable=implicit-str-concat
 
   return value
 
@@ -372,11 +374,11 @@ def transform_with_state(f) -> TransformedWithState:
   non-trainable state:
 
   >>> y, state = f.apply(params, state, 3.0)
-  >>> y.numpy()
+  >>> float(y.numpy())
   3.0
 
   >>> y, state = f.apply(params, state, 6.0)
-  >>> y.numpy()
+  >>> float(y.numpy())
   5.0
 
   Args:
